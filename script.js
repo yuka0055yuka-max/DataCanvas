@@ -1,14 +1,31 @@
 let chart;
 
+document.addEventListener("DOMContentLoaded", () => {
+  // イベント登録
+  document.getElementById("addRowBtn").addEventListener("click", () => addRow());
+  document.getElementById("renderBtn").addEventListener("click", renderFromTable);
+  document.getElementById("csvInput").addEventListener("change", importCSV);
+  document.getElementById("txtInput").addEventListener("change", importTXT);
+  document.getElementById("exportBtn").addEventListener("click", exportToTXT);
+
+  // PWA登録
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js").catch(err => console.error("SW登録失敗:", err));
+  }
+});
+
 function addRow(x = "", y = "") {
   const tbody = document.querySelector("#dataTable tbody");
   const row = document.createElement("tr");
   row.innerHTML = `
     <td><input type="text" value="${x}"></td>
     <td><input type="number" value="${y}"></td>
-    <td><button onclick="this.parentElement.parentElement.remove()">🗑️</button></td>
+    <td><button class="deleteBtn">🗑️</button></td>
   `;
   tbody.appendChild(row);
+
+  // 削除ボタンにイベント追加
+  row.querySelector(".deleteBtn").addEventListener("click", () => row.remove());
 }
 
 function renderFromTable() {
@@ -63,10 +80,14 @@ function renderFromTable() {
 }
 
 function showStats(data) {
+  if (data.length === 0) {
+    document.getElementById("stats").textContent = "データがありません";
+    return;
+  }
   const avg = (data.reduce((a, b) => a + b, 0) / data.length).toFixed(2);
   const min = Math.min(...data);
   const max = Math.max(...data);
-  document.getElementById("stats").innerHTML =
+  document.getElementById("stats").textContent =
     `平均: ${avg} / 最小: ${min} / 最大: ${max}`;
 }
 
@@ -116,7 +137,3 @@ function exportToTXT() {
   link.download = "graph-data.txt";
   link.click();
 }
-
-window.addEventListener("load", () => {
-  if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js");
-});
