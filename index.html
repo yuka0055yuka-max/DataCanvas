@@ -1,1 +1,47 @@
+index.html
 
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>グラフ可視化PWA</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>📊 グラフ可視化ツール</h1>
+
+  <label>グラフタイプ:
+    <select id="chartType">
+      <option value="line">折れ線</option>
+      <option value="bar">棒</option>
+      <option value="pie">円</option>
+      <option value="scatter">散布図</option>
+      <option value="radar">レーダー</option>
+      <option value="stacked">積み上げ棒</option>
+    </select>
+  </label>
+
+  <label>X軸ラベル: <input type="text" id="xLabel" value="年"></label>
+  <label>Y軸ラベル: <input type="text" id="yLabel" value="値"></label>
+
+  <table id="dataTable">
+    <thead><tr><th>X</th><th>Y</th><th>操作</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  <button onclick="addRow()">＋ 行を追加</button>
+  <button onclick="renderFromTable()">グラフ更新</button>
+
+  <h2>📥 ファイル操作</h2>
+  <input type="file" id="csvInput" accept=".csv" onchange="importCSV()">
+  <input type="file" id="txtInput" accept=".txt" onchange="importTXT()">
+  <button onclick="exportToTXT()">📤 TXTエクスポート</button>
+
+  <canvas id="myChart"></canvas>
+  <div id="stats"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
