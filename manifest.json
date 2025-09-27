@@ -1,0 +1,9 @@
+{
+  "name": "グラフ可視化PWA",
+  "short_name": "GraphPWA",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2196f3",
+  "icons": []
+}
